@@ -58,26 +58,26 @@
 				<h1 class="my-4">Amuzon</h1>
 				<div class="list-group">
 					<form id="allfilter"
-						action="${pageContext.request.contextPath}/category" method="POST">
-						<input type="hidden" value="[VALEUR_DU_PARAMETRE]" name="[NOM_DU_PARAMETRE]" /> <a
+						action="category" method="POST">
+						<input type="hidden" value="all" name="category" /> <a
 							class="list-group-item" href="javascript:{}"
 							onclick="document.getElementById('allfilter').submit(); return false;">ALL</a>
 					</form>
 					<form id="computerfilter"
 						action="${pageContext.request.contextPath}/category" method="POST">
-						<input type="hidden" value="[VALEUR_DU_PARAMETRE]" name="[NOM_DU_PARAMETRE]" /> <a
+						<input type="hidden" value="computer" name="category" /> <a
 							class="list-group-item" href="javascript:{}"
 							onclick="document.getElementById('computerfilter').submit(); return false;">Computer</a>
 					</form>
 					<form id="clothesfilter"
 						action="${pageContext.request.contextPath}/category" method="POST">
-						<input type="hidden" value="[VALEUR_DU_PARAMETRE]" name="[NOM_DU_PARAMETRE]" /> <a
+						<input type="hidden" value="clothes" name="category" /> <a
 							class="list-group-item" href="javascript:{}"
 							onclick="document.getElementById('clothesfilter').submit(); return false;">Clothes</a>
 					</form>
 					<form id="moviesfilter"
 						action="${pageContext.request.contextPath}/category" method="POST">
-						<input type="hidden" value="[VALEUR_DU_PARAMETRE]" name="[NOM_DU_PARAMETRE]" /> <a
+						<input type="hidden" value="movies" name="category" /> <a
 							class="list-group-item" href="javascript:{}"
 							onclick="document.getElementById('moviesfilter').submit(); return false;">Movies</a>
 					</form>
@@ -113,21 +113,20 @@
 								<h4 class="modal-title">Add a product</h4>
 							</div>
 							<div class="modal-body">
-								<form id="addproductform"
-									action="${pageContext.request.contextPath}" method="[METHODE_HTTP]"> <!-- Choisir l'url adéquate et la méthode http voulue -->
+								<form id="addproductform" action="add" method="POST">
 									<div class="form-group">
 										<label for="titleinput">Title:</label> <input type="text"
-											class="form-control" id="titleinput" name="[NOM_DU_PRARAMETRE]"></input>
+											class="form-control" id="titleinput" name="title"></input>
 									</div>
 									<div class="form-group">
 										<label for="descriptioninput">Description:</label> <input
 											type="text" class="form-control" id="descriptioninput"
-											name="[NOM_DU_PARAMETRE]"></input>
+											name="description"></input>
 									</div>
 
 									<div class="form-group">
 										<label for="categoryselect">Category:</label> <select
-											class="form-control" id="categoryselect" name="[NOM_DU_PARAMETRE]">
+											class="form-control" id="categoryselect" name="category">
 											<option>computer</option>
 											<option>clothes</option>
 											<option>movies</option>
@@ -171,23 +170,24 @@
 				<div id="previews" class="row">
 
 					<!--  cette div est un exemple . Il faut en faire une pour chaque produit par JSTL. -->
-					<div class="col-lg-4 col-md-6 mb-4" id="[ID_DU_PRODUIT]">
+					<c:forEach items="${products}" var="product">
+				
+					<div class="col-lg-4 col-md-6 mb-4" id="product.id">
 						<div class="card h-100">
 							<a href="#"><img class="card-img-top"
 								src="http://placehold.it/700x400" alt=""></a>
 							<div class="card-body">
 								<h4 class="card-title">
-									<a href="#">[TITRE_DU_PRODUIT]</a>
+									<a href="#"> <c:out value="${ product.title }" /> </a>
 								</h4>
-								<p class="card-text">Type : [CATEGORIE_DU_PRODUIT]</p>
-								<p class="card-text">[DESCRIPTION_DU_PRODUIT]</p>
+								<p class="card-text">Type : <c:out value="${ product.category }" />   </p>
+								<p class="card-text"> <c:out value="${ product.description }" />  </p>
 							</div>
 							<div class="card-footer">
-								<form action="${pageContext.request.contextPath}" <!-- URL à choisir en fonction -->
-									method="POST">
-									<input type="hidden" value="[ID_DU_PRODUIT]" name="productId" />
-									<button name="buttonRemove" type="submit"
-										class="btn btn-danger btn-xs">
+							<!-- supprimer un produit  -->
+								<form action="remove" method="POST">
+									<input type="hidden" value="${product.id }" name="productId" />
+									<button name="buttonRemove" type="submit" class="btn btn-danger btn-xs">
 										<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
 									</button>
 
@@ -196,12 +196,13 @@
 						</div>
 					</div>
 					
-					
+					</c:forEach>
 				</div>
 
 			</div>
 			<!-- /.col-lg-9 -->
 
+					
 		</div>
 		<!-- /.row -->
 
